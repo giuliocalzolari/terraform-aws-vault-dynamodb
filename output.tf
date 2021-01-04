@@ -10,11 +10,15 @@ output "alb_hostname" {
   value       = aws_alb.main.dns_name
 }
 
+output "dynamodb_arn" {
+  description = "Dynamodb Table ARN"
+  value       = aws_dynamodb_table.dynamodb_table.arn
+}
+
 output "vault_fqdn" {
   description = "Vault DNS"
   value       = "${var.prefix}${var.app_name}${var.suffix}.${data.aws_route53_zone.zone.name}"
 }
-
 
 output "kms_key_id" {
   description = "KMS key ID"

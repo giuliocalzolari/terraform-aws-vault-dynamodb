@@ -99,7 +99,7 @@ resource "aws_cloudwatch_metric_alarm" "httpcode_target_5xx_count" {
   ok_actions          = var.actions_ok
 
   dimensions = {
-    "TargetGroup"  = aws_alb_target_group.main
+    "TargetGroup"  = aws_alb_target_group.main.id
     "LoadBalancer" = aws_alb.main.id
   }
 }
@@ -136,7 +136,7 @@ resource "aws_cloudwatch_metric_alarm" "target_response_time_average" {
   ok_actions          = var.actions_ok
 
   dimensions = {
-    "TargetGroup"  = aws_alb_target_group.main
+    "TargetGroup"  = aws_alb_target_group.main.id
     "LoadBalancer" = aws_alb.main.id
   }
 }

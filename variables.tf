@@ -157,6 +157,11 @@ variable "recreate_asg_when_lc_changes" {
   default     = true
 }
 
+variable "dynamodb_backup" {
+  description = "Enable AWS Backup for DynamoDB backend to have multiple RPO for the Vault"
+  type        = bool
+  default     = true
+}
 
 variable "actions_alarm" {
   type        = list(string)

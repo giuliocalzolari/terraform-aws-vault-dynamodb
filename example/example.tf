@@ -25,8 +25,9 @@ module "vpc" {
   azs            = ["${var.region}a", "${var.region}b", "${var.region}c"]
   public_subnets = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24"]
 
+  enable_dynamodb_endpoint = true
   tags = {
-    Terraform = "true"
+    CreatedBy = "Terraform"
     App       = "vault"
   }
 }
@@ -40,16 +41,19 @@ module "vault" {
 
   lb_subnets  = module.vpc.public_subnets
   ec2_subnets = module.vpc.public_subnets
-  zone_name   = "gc.crlabs.cloud"
+
+  zone_name = "gc.crlabs.cloud"
 
   key_name          = "giulio.calzolari"
   size              = 2
   admin_cidr_blocks = ["93.36.29.80/32"]
 
+  dynamodb_backup = false
+
   kms_key_id = "c37148b5-490d-4730-b953-2ea56f9779d3"
 
   extra_tags = {
-    Terraform = "true"
+    CreatedBy = "Terraform"
     App       = "vault"
   }
 }

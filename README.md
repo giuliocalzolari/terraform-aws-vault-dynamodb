@@ -1,4 +1,4 @@
-# Vaul + Consul all in ONE
+# Hashicorp Vault using AWS Native
 
 ## Overview
 
@@ -10,13 +10,14 @@
   <img src="https://raw.githubusercontent.com/giuliocalzolari/terraform-aws-vault-dynamodb/master/diagram.png">
 </p>
 
-
+Created using [CloudCraft](https://app.cloudcraft.co/view/3763faa4-3c8e-4891-986c-b2d5a7dae7d7?key=OrI3ksrGOEl9PaMX42Kmag)
 
 # The solution
 
 - AWS Autoscaling group with Userdata to install Vault and AWS Cloudwatch Agent.
 - Vault with AWSKMS Auto-Unseal
 - AWS DynamoDB as backend
+- AWS Backup for DynamoDB
 - basic Vault Provisioning
 - Export of Vault sensitive parameters in AWS Paramaters Store
 - Using AWS ARM instance with a1.medium as default to save cost
@@ -25,7 +26,7 @@
 
 This module support Terraform `>= 0.12.0` tested with `0.12`, `0.13` and `0.14`
 
-# Module Input Variables
+# Module Overview
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Providers
 
@@ -47,6 +48,7 @@ This module support Terraform `>= 0.12.0` tested with `0.12`, `0.13` and `0.14`
 | arch | EC2 Architecture arm64/x86\_64 (arm64 is suggested) | `string` | `"arm64"` | no |
 | aws\_region | AWS region to launch servers. | `string` | n/a | yes |
 | default\_cooldown | ASG cooldown time | `string` | `"30"` | no |
+| dynamodb\_backup | Enable AWS Backup for DynamoDB backend to have multiple RPO for the Vault | `bool` | `true` | no |
 | ec2\_subnets | ASG Subnets | `list(string)` | `[]` | no |
 | environment | Environment Name (e.g. dev, test, uat, prod, etc..) | `string` | `"dev"` | no |
 | extra\_tags | Additional Tag to add | `map(string)` | n/a | yes |
@@ -73,6 +75,7 @@ This module support Terraform `>= 0.12.0` tested with `0.12`, `0.13` and `0.14`
 |------|-------------|
 | alb\_arn | ALB ARN |
 | alb\_hostname | ALB DNS |
+| dynamodb\_arn | Dynamodb Table ARN |
 | iam\_role\_arn | IAM EC2 role ARN |
 | kms\_key\_id | KMS key ID |
 | root\_pass\_arn | SSM vault root password ARN |
@@ -139,6 +142,14 @@ pre-commit install
 pre-commit run --all-files
 ```
 
-# Issue
+# Troubleshooting / Known Issue
 
-if for some reason the ASG is not booting the terraform code get in stuck the only option is to destroy the ASG with this command ` terraform destroy -target module.vault.aws_autoscaling_group.asg `
+- Autoscaling Group not encrypted EBS volume required to have a dedicated AMI already encrypted and required to have the proper service role for ASG to be albe to encrypt/decrypt the ebs volume
+
+- ACM soft limit if you see this error `Error requesting certificate: LimitExceededException: Error: you have reached your limit of 20 certificates in the last year.` please increase the Limit using AWs Support of AWS Quota
+
+- Cloudwatch Logs Error `Error: Creating CloudWatch Log Group failed: InvalidParameterException: The specified KMS Key Id could not be found.`, double check if the KMS key have proper policy to allow the regional Cloudwatch logs Service Principle (e.g. `logs.eu-central-1.amazonaws.com`)
+
+- AWS Backup Vault can create an error (e.g. `Error: error deleting Backup Vault (test-vault-dynamodb-backup): InvalidRequestException: Backup vault cannot be deleted (contains 2 recovery points)`) if a backup is already created. Recovery point require to be mnually deleted
+
+- if for some reason the ASG is not booting the terraform code get in stuck the only option is to destroy the ASG with this command ` terraform destroy -target module.vault.aws_autoscaling_group.asg `

@@ -67,9 +67,8 @@ resource "aws_launch_configuration" "lc" {
  * Create Auto-Scaling Group
  */
 resource "aws_autoscaling_group" "asg" {
-  // name_prefix               = "${var.environment}-${var.prefix}${var.app_name}${var.suffix}-"
-  name_prefix = "${join(
-    "-",
+
+  name_prefix = "${join("-",
     compact(
       [
         var.environment,
@@ -100,7 +99,7 @@ resource "aws_autoscaling_group" "asg" {
   }
 
   tag {
-    key                 = "environment_name"
+    key                 = "cluster_name"
     value               = "${var.environment}-${var.prefix}${var.app_name}${var.suffix}"
     propagate_at_launch = true
   }
