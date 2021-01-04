@@ -39,8 +39,10 @@ This module support Terraform `>= 0.12.0` tested with `0.12`, `0.13` and `0.14`
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
+| actions\_alarm | A list of actions to take when alarms are triggered. Will likely be an SNS topic for event distribution. | `list(string)` | `[]` | no |
+| actions\_ok | A list of actions to take when alarms are cleared. Will likely be an SNS topic for event distribution. | `list(string)` | `[]` | no |
 | admin\_cidr\_blocks | Admin CIDR Block to access SSH and internal Application ports | `list(string)` | `[]` | no |
-| alb\_ssl\_policy | ALB ssl policy | `string` | `"ELBSecurityPolicy-TLS-1-2-Ext-2018-06"` | no |
+| alb\_ssl\_policy | ALB ssl policy | `string` | `"ELBSecurityPolicy-FS-1-2-2019-08"` | no |
 | app\_name | Application name N.1 (e.g. vault, secure, store, etc..) | `string` | `"vault"` | no |
 | arch | EC2 Architecture arm64/x86\_64 (arm64 is suggested) | `string` | `"arm64"` | no |
 | aws\_region | AWS region to launch servers. | `string` | n/a | yes |
