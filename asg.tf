@@ -120,6 +120,8 @@ resource "aws_autoscaling_group" "asg" {
   lifecycle {
     create_before_destroy = true
   }
+
+  depends_on = [aws_alb_target_group.main]
 }
 
 
@@ -140,6 +142,9 @@ resource "aws_cloudwatch_metric_alarm" "high_cpu_utilization" {
   statistic           = "Average"
   threshold           = 90
   unit                = "Percent"
+  alarm_actions       = var.actions_alarm
+  ok_actions          = var.actions_ok
+
 }
 
 resource "aws_cloudwatch_metric_alarm" "low_cpu_credit_balance" {
@@ -159,4 +164,6 @@ resource "aws_cloudwatch_metric_alarm" "low_cpu_credit_balance" {
   statistic           = "Minimum"
   threshold           = 10
   unit                = "Count"
+  alarm_actions       = var.actions_alarm
+  ok_actions          = var.actions_ok
 }

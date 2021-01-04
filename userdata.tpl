@@ -183,6 +183,9 @@ WantedBy=multi-user.target
 EOF
 
 
+openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
+  -keyout /etc/vault/vault_ssl.key -out /etc/vault/vault_ssl.crt -subj "/CN=vault.local"
+
 cat << EOF > /etc/vault/vault.hcl
 storage "dynamodb" {
   region     = "${aws_region}"
@@ -192,13 +195,15 @@ storage "dynamodb" {
 listener "tcp" {
   address = "[::]:8200"
   cluster_address = "[::]:8201"
-  tls_disable = 1
+  tls_cert_file = "/etc/vault/vault_ssl.crt"
+  tls_key_file = "/etc/vault/vault_ssl.key"
 }
+
 seal "awskms" {
   region     = "${aws_region}"
   kms_key_id = "${kms_key}"
 }
-api_addr = "http://127.0.0.1:8200"
+api_addr = "https://127.0.0.1:8200"
 cluster_addr = "https://127.0.0.1:8201"
 ui=true
 
@@ -210,7 +215,7 @@ touch /var/log/vault_audit.log
 chown vault:vault /var/log/vault_audit.log
 
 cat << EOF > /etc/profile.d/vault.sh
-export VAULT_ADDR=http://127.0.0.1:8200
+export VAULT_ADDR=https://127.0.0.1:8200
 export VAULT_SKIP_VERIFY=true
 EOF
 systemctl daemon-reload
@@ -218,10 +223,10 @@ systemctl enable vault
 systemctl start vault
 
 
-export VAULT_ADDR=http://127.0.0.1:8200
+export VAULT_ADDR=https://127.0.0.1:8200
 export VAULT_SKIP_VERIFY=true
 echo "waiting vault boot"
-waitforurl http://127.0.0.1:8200/v1/sys/seal-status
+waitforurl https://127.0.0.1:8200/v1/sys/seal-status
 echo "vault is available"
 STATUS=$(vault status -format=json)
 if [ "$(echo $STATUS | jq .initialized)" == "false" ]

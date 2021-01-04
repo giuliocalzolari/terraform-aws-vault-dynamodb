@@ -14,15 +14,16 @@
 
 # The solution
 
-- AWS Autoscaling group with Userdata to install Vault, Consul and AWS Cloudwatch Agent.
+- AWS Autoscaling group with Userdata to install Vault and AWS Cloudwatch Agent.
 - Vault with AWSKMS Auto-Unseal
+- AWS DynamoDB as backend
 - basic Vault Provisioning
 - Export of Vault sensitive parameters in AWS Paramaters Store
 - Using AWS ARM instance with a1.medium as default to save cost
 
 ## Terraform Version
 
-This module support Terraform `>= 0.12.0`
+This module support Terraform `>= 0.12.0` tested with `0.12`, `0.13` and `0.14`
 
 # Module Input Variables
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

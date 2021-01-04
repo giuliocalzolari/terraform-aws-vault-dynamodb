@@ -14,7 +14,7 @@ provider "aws" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "2.7.0"
+  version = "2.64.0"
 
   enable_dns_hostnames = true
   enable_dns_support   = true
@@ -44,7 +44,7 @@ module "vault" {
 
   key_name          = "giulio.calzolari"
   size              = 2
-  admin_cidr_blocks = ["93.32.180.190/32"]
+  admin_cidr_blocks = ["93.36.29.80/32"]
 
   kms_key_id = "c37148b5-490d-4730-b953-2ea56f9779d3"
 

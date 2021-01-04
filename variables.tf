@@ -142,7 +142,7 @@ variable "health_check_type" {
 variable "alb_ssl_policy" {
   type        = string
   description = "ALB ssl policy"
-  default     = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
+  default     = "ELBSecurityPolicy-FS-1-2-2019-08"
 }
 
 variable "admin_cidr_blocks" {
@@ -155,4 +155,17 @@ variable "recreate_asg_when_lc_changes" {
   description = "Whether to recreate an autoscaling group when launch configuration changes"
   type        = bool
   default     = true
+}
+
+
+variable "actions_alarm" {
+  type        = list(string)
+  default     = []
+  description = "A list of actions to take when alarms are triggered. Will likely be an SNS topic for event distribution."
+}
+
+variable "actions_ok" {
+  type        = list(string)
+  default     = []
+  description = "A list of actions to take when alarms are cleared. Will likely be an SNS topic for event distribution."
 }

@@ -1,7 +1,3 @@
-terraform {
-  required_version = ">= 0.12.0"
-}
-
 resource "aws_kms_key" "key" {
   count       = var.kms_key_id == "" ? 1 : 0
   description = "${var.environment}-${var.prefix}${var.app_name}${var.suffix}-kms"
