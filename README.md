@@ -7,7 +7,7 @@
 ## Diagram
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/giuliocalzolari/terraform-aws-vault-consul/master/diagram.png">
+  <img src="https://raw.githubusercontent.com/giuliocalzolari/terraform-aws-vault-dynamodb/master/diagram.png">
 </p>
 
 
