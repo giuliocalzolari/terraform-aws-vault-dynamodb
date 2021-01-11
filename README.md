@@ -26,6 +26,9 @@ Created using [CloudCraft](https://app.cloudcraft.co/view/3763faa4-3c8e-4891-986
 
 This module support Terraform `>= 0.12.0` tested with `0.12`, `0.13` and `0.14`
 
+
+Current module version  ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/giuliocalzolari/terraform-aws-vault-dynamodb)
+
 # Module Overview
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Providers
@@ -128,11 +131,8 @@ done
 
 in **less than a minute** the standby instance will be available and in **few minutes** the ASG will launch a new node
 
-## License
 
-this repo is licensed under the [WTFPL](LICENSE).
-
-# pre-commit hook
+## pre-commit hook
 
 this repo is using pre-commit hook to know more [click here](https://github.com/antonbabenko/pre-commit-terraform)
 to manually trigger use this command
@@ -144,12 +144,15 @@ pre-commit run --all-files
 
 # Troubleshooting / Known Issue
 
-- Autoscaling Group not encrypted EBS volume required to have a dedicated AMI already encrypted and required to have the proper service role for ASG to be albe to encrypt/decrypt the ebs volume
+- **Autoscaling Group** not encrypted EBS volume required to have a dedicated AMI already encrypted and required to have the proper service role for ASG to be albe to encrypt/decrypt the ebs volume
 
-- ACM soft limit if you see this error `Error requesting certificate: LimitExceededException: Error: you have reached your limit of 20 certificates in the last year.` please increase the Limit using AWs Support of AWS Quota
+- **ACM** soft limit if you see this error `Error requesting certificate: LimitExceededException: Error: you have reached your limit of 20 certificates in the last year.` please increase the Limit using AWs Support of AWS Quota
 
-- Cloudwatch Logs Error `Error: Creating CloudWatch Log Group failed: InvalidParameterException: The specified KMS Key Id could not be found.`, double check if the KMS key have proper policy to allow the regional Cloudwatch logs Service Principle (e.g. `logs.eu-central-1.amazonaws.com`)
+- **Cloudwatch Logs** KMS Error `Error: Creating CloudWatch Log Group failed: InvalidParameterException: The specified KMS Key Id could not be found.`, double check if the KMS key have proper policy to allow the regional Cloudwatch logs Service Principle (e.g. `logs.eu-central-1.amazonaws.com`)
 
-- AWS Backup Vault can create an error (e.g. `Error: error deleting Backup Vault (test-vault-dynamodb-backup): InvalidRequestException: Backup vault cannot be deleted (contains 2 recovery points)`) if a backup is already created. Recovery point require to be mnually deleted
+- **AWS Backup Vault** can create an error (e.g. `Error: error deleting Backup Vault (test-vault-dynamodb-backup): InvalidRequestException: Backup vault cannot be deleted (contains X recovery points)`) if a backup is already created. Recovery point require to be mnually deleted
 
-- if for some reason the ASG is not booting the terraform code get in stuck the only option is to destroy the ASG with this command ` terraform destroy -target module.vault.aws_autoscaling_group.asg `
+
+## License
+
+this repo is licensed under the [WTFPL](LICENSE).

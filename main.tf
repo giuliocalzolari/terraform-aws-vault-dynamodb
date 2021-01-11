@@ -147,7 +147,7 @@ resource "aws_cloudwatch_log_group" "logs" {
   name              = "${var.environment}-${var.prefix}${var.app_name}${var.suffix}"
   retention_in_days = 90
 
-  kms_key_id = local.kms_key_id
+  kms_key_id = data.aws_kms_key.by_id.arn
 
   tags = merge(
     var.extra_tags,
